@@ -2,11 +2,10 @@
 #include "AddEditorDialog.h"
 #include "DownloadEditorDialog.h"
 #include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QCoreApplication>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-  setWindowTitle("Unrealium Launcher");
+  setWindowTitle("Unreal Launcher");
   setMinimumSize(800, 600);
   resize(800, 600);
 

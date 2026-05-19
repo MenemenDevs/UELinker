@@ -8,6 +8,7 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
+Git = 0
 
 echo -e "${BLUE}=======================================${NC}"
 echo -e "${BLUE}  Unrealium Launcher Installer v1.0    ${NC}"
@@ -16,7 +17,7 @@ echo -e "${BLUE}  Linux Unreal Engine Desktop Linker   ${NC}"
 echo -e "${BLUE}=======================================${NC}"
 
 # ── Step 0: Auto-clone from GitHub if not already cloned ─────
-if [ "$(basename "$PWD")" != "UELinker" ] && [ "$(basename "$PWD")" != "Unrealium-Launcher" ]; then
+if [ "$(basename "$PWD")" != "Unrealium-Launcher" ] && [ "$(basename "$PWD")" != "UELinker" ]; then
     echo -e "\n${YELLOW}[0/4] Cloning Unrealium Launcher from GitHub...${NC}"
     if command -v git &> /dev/null; then
         git clone https://github.com/AtaberkCelil/UELinker.git Unrealium-Launcher
@@ -32,19 +33,29 @@ fi
 
 # ── Step 1: Dependencies ──────────────────────────────────────
 echo -e "\n${YELLOW}[1/4] Checking and installing required dependencies...${NC}"
+if Git -eq 1; then
+    if command -v yay &> /dev/null; then
+        echo -e "    Installing git "
+        yay -S --needed --noconfirm git
+    fi
+    elif command -v pacman &> /dev/null; then
+        echo -e "    Installing git "
+        sudo pacman -S --needed --noconfirm git
+fi
+
 if command -v yay &> /dev/null; then
     echo -e "      Package manager: ${GREEN}yay${NC} (AUR)"
-    yay -S --needed --noconfirm qt6-base cmake make gcc
+    yay -S --needed --noconfirm qt6-base qt6-imageformats cmake make gcc
 elif command -v pacman &> /dev/null; then
     echo -e "      Package manager: ${GREEN}pacman${NC}"
-    sudo pacman -S --needed --noconfirm qt6-base cmake make gcc
+    sudo pacman -S --needed --noconfirm qt6-base qt6-imageformats cmake make gcc
 elif command -v apt-get &> /dev/null; then
     echo -e "      Package manager: ${GREEN}apt${NC} (Debian/Ubuntu/Kali)"
     sudo apt-get update
     sudo apt-get install -y qt6-base-dev qt6-base-dev-tools cmake make g++
 else
-    echo -e "${RED}[!] No supported package manager found (yay, pacman, apt).${NC}"
-    echo -e "    Please install the following packages manually: Qt6, cmake, make, gcc/g++"
+    echo -e "${RED}[!] Neither yay, pacman, nor apt found.${NC}"
+    echo -e "    Please install the following packages manually: qt6-base qt6-imageformats cmake make gcc"
     exit 1
 fi
 echo -e "${GREEN}    ✓ Dependencies are ready.${NC}"
@@ -68,6 +79,7 @@ echo -e "${GREEN}    ✓ Build successful.${NC}"
 # ── Step 4: Install ───────────────────────────────────────────
 echo -e "\n${YELLOW}[4/4] Installing Unrealium Launcher to your system...${NC}"
 mkdir -p ~/.local/bin
+mkdir -p ~/.local/share/UnrealiumLauncher
 
 # Support possible binary names
 if [ -f "build/UnrealiumLauncher" ]; then
@@ -79,6 +91,10 @@ else
     exit 1
 fi
 chmod +x ~/.local/bin/UnrealiumLauncher
+
+# Copy assets data to local share
+echo -e "      Copying application data..."
+cp -r assets ~/.local/share/UnrealiumLauncher/
 
 # Create .desktop entry so it appears in app menus
 mkdir -p ~/.local/share/applications
@@ -94,6 +110,7 @@ Categories=Development;Utility;
 EOF
 
 echo -e "${GREEN}    ✓ Installed to ~/.local/bin/UnrealiumLauncher${NC}"
+echo -e "${GREEN}    ✓ Application data copied to ~/.local/share/UnrealiumLauncher/${NC}"
 echo -e "${GREEN}    ✓ Desktop entry created at ~/.local/share/applications/UnrealiumLauncher.desktop${NC}"
 
 # ── Done! ─────────────────────────────────────────────────────

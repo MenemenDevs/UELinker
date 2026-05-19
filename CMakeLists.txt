@@ -21,5 +21,5 @@ add_executable(UnrealiumLauncher
 
 target_link_libraries(UnrealiumLauncher PRIVATE Qt6::Widgets Qt6::Core Qt6::Network)
 
-# Copy runtime assets into the build directory so the executable can load them
+# Copy runtime assets into the build directory
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
