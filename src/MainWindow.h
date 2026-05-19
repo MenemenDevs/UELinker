@@ -3,6 +3,11 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QStackedWidget>
+#include <QLineEdit>
+#include <QListView>
+#include <QStandardItemModel>
+
+#include "NodeManager.h"
 
 
 class MainWindow : public QMainWindow {
@@ -13,6 +18,7 @@ public:
 
 private slots:
   void openAddEditorDialog();
+  void openDownloadEditorDialog();
   void showViewEditorsPage();
   void showMainPage();
 
@@ -20,6 +26,7 @@ private:
   QStackedWidget *stackedWidget;
   QWidget *mainPage;
   QPushButton *addEditorButton;
+  QPushButton *downloadEditorButton;
   QPushButton *viewEditorsButton;
   ViewEditorsPage *viewEditorsPage;
 };

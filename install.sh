@@ -38,9 +38,13 @@ if command -v yay &> /dev/null; then
 elif command -v pacman &> /dev/null; then
     echo -e "      Package manager: ${GREEN}pacman${NC}"
     sudo pacman -S --needed --noconfirm qt6-base cmake make gcc
+elif command -v apt-get &> /dev/null; then
+    echo -e "      Package manager: ${GREEN}apt${NC} (Debian/Ubuntu/Kali)"
+    sudo apt-get update
+    sudo apt-get install -y qt6-base-dev qt6-base-dev-tools cmake make g++
 else
-    echo -e "${RED}[!] Neither yay nor pacman found.${NC}"
-    echo -e "    Please install the following packages manually: qt6-base cmake make gcc"
+    echo -e "${RED}[!] No supported package manager found (yay, pacman, apt).${NC}"
+    echo -e "    Please install the following packages manually: Qt6, cmake, make, gcc/g++"
     exit 1
 fi
 echo -e "${GREEN}    ✓ Dependencies are ready.${NC}"
