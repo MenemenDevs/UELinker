@@ -3,11 +3,6 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QStackedWidget>
-#include <QLineEdit>
-#include <QListView>
-#include <QStandardItemModel>
-
-#include "NodeManager.h"
 
 
 class MainWindow : public QMainWindow {

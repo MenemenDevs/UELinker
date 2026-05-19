@@ -10,17 +10,17 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}=======================================${NC}"
-echo -e "${BLUE}       UELinker Installer v1.0         ${NC}"
+echo -e "${BLUE}  Unrealium Launcher Installer v1.0    ${NC}"
 echo -e "${BLUE}=======================================${NC}"
 echo -e "${BLUE}  Linux Unreal Engine Desktop Linker   ${NC}"
 echo -e "${BLUE}=======================================${NC}"
 
 # ── Step 0: Auto-clone from GitHub if not already cloned ─────
-if [ "$(basename "$PWD")" != "UELinker" ]; then
-    echo -e "\n${YELLOW}[0/4] Cloning UELinker from GitHub...${NC}"
+if [ "$(basename "$PWD")" != "UELinker" ] && [ "$(basename "$PWD")" != "Unrealium-Launcher" ]; then
+    echo -e "\n${YELLOW}[0/4] Cloning Unrealium Launcher from GitHub...${NC}"
     if command -v git &> /dev/null; then
-        git clone https://github.com/AliGalipALATLI/UELinker.git
-        cd UELinker
+        git clone https://github.com/AtaberkCelil/UELinker.git Unrealium-Launcher
+        cd Unrealium-Launcher
         echo -e "${GREEN}    ✓ Cloned successfully. Restarting installer...${NC}"
         # Restart the script from the new directory
         exec ./install.sh
@@ -60,47 +60,47 @@ else
 fi
 
 # ── Step 3: Build ─────────────────────────────────────────────
-echo -e "\n${YELLOW}[3/4] Building UELinker with CMake...${NC}"
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_NAME=UELinker
+echo -e "\n${YELLOW}[3/4] Building Unrealium Launcher with CMake...${NC}"
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_NAME=UnrealiumLauncher
 cmake --build build -j$(nproc)
 echo -e "${GREEN}    ✓ Build successful.${NC}"
 
 # ── Step 4: Install ───────────────────────────────────────────
-echo -e "\n${YELLOW}[4/4] Installing UELinker to your system...${NC}"
+echo -e "\n${YELLOW}[4/4] Installing Unrealium Launcher to your system...${NC}"
 mkdir -p ~/.local/bin
 
-# Support both possible binary names
-if [ -f "build/UELinker" ]; then
-    cp build/UELinker ~/.local/bin/UELinker
-elif [ -f "build/UnrealLauncher" ]; then
-    cp build/UnrealLauncher ~/.local/bin/UELinker
+# Support possible binary names
+if [ -f "build/UnrealiumLauncher" ]; then
+    cp build/UnrealiumLauncher ~/.local/bin/UnrealiumLauncher
+elif [ -f "build/UELinker" ]; then
+    cp build/UELinker ~/.local/bin/UnrealiumLauncher
 else
     echo -e "${RED}[!] Build binary not found. Build may have failed.${NC}"
     exit 1
 fi
-chmod +x ~/.local/bin/UELinker
+chmod +x ~/.local/bin/UnrealiumLauncher
 
-# Create .desktop entry so UELinker appears in app menus
+# Create .desktop entry so it appears in app menus
 mkdir -p ~/.local/share/applications
-cat <<EOF > ~/.local/share/applications/UELinker.desktop
+cat <<EOF > ~/.local/share/applications/UnrealiumLauncher.desktop
 [Desktop Entry]
 Type=Application
-Name=UELinker
+Name=Unrealium Launcher
 Comment=Register and launch Unreal Engine editors on Linux
-Exec=$HOME/.local/bin/UELinker
+Exec=$HOME/.local/bin/UnrealiumLauncher
 Icon=$HOME/.local/share/icons/UE.png
 Terminal=false
 Categories=Development;Utility;
 EOF
 
-echo -e "${GREEN}    ✓ UELinker installed to ~/.local/bin/UELinker${NC}"
-echo -e "${GREEN}    ✓ Desktop entry created at ~/.local/share/applications/UELinker.desktop${NC}"
+echo -e "${GREEN}    ✓ Installed to ~/.local/bin/UnrealiumLauncher${NC}"
+echo -e "${GREEN}    ✓ Desktop entry created at ~/.local/share/applications/UnrealiumLauncher.desktop${NC}"
 
 # ── Done! ─────────────────────────────────────────────────────
 echo -e "\n${GREEN}=======================================${NC}"
 echo -e "${GREEN}  Installation Complete! 🎉             ${NC}"
 echo -e "${GREEN}=======================================${NC}"
-echo -e "  You can now find ${BLUE}UELinker${NC} in your application menu."
+echo -e "  You can now find ${BLUE}Unrealium Launcher${NC} in your application menu."
 echo -e "  Run it, click ${YELLOW}Add Editor${NC}, and point it to your"
 echo -e "  Unreal Engine root folder to create a desktop shortcut."
 echo -e "${GREEN}=======================================${NC}\n"

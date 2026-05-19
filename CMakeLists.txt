@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(UnrealLauncher LANGUAGES CXX)
+project(UnrealiumLauncher LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
@@ -8,7 +8,7 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Network)
 
-add_executable(UnrealLauncher
+add_executable(UnrealiumLauncher
     src/main.cpp
     src/MainWindow.cpp
     src/AddEditorDialog.cpp
@@ -17,12 +17,9 @@ add_executable(UnrealLauncher
     src/ConfigManager.cpp
     src/ViewEditorsPage.cpp
     src/EditorCardWidget.cpp
-    src/NodeManager.cpp
-    src/NodeDetailDialog.cpp
 )
 
-target_link_libraries(UnrealLauncher PRIVATE Qt6::Widgets Qt6::Core Qt6::Network)
+target_link_libraries(UnrealiumLauncher PRIVATE Qt6::Widgets Qt6::Core Qt6::Network)
 
 # Copy runtime assets into the build directory so the executable can load them
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY assistant DESTINATION ${CMAKE_BINARY_DIR})
